@@ -53,39 +53,6 @@ categories = {"2":"Autos & Vehicles",
 "43":"Shows",
 "44":"Trailers"}
 
-categories = {"2":"Autos & Vehicles",
-"1":"Film & Animation",
-"10":"Music",
-"15":"Pets & Animals",
-"17":"Sports",
-"18":"Short Movies",
-"19":"Travel & Events",
-"20":"Gaming",
-"21":"Videoblogging",
-"22":"People & Blogs",
-"23":"Comedy",
-"24":"Entertainment",
-"25":"News & Politics",
-"26":"Howto & Style",
-"27":"Education",
-"28":"Science & Technology",
-"29":"Nonprofits & Activism",
-"30":"Movies",
-"31":"Anime/Animation",
-"32":"Action/Adventure",
-"33":"Classics",
-"34":"Comedy",
-"35":"Documentary",
-"36":"Drama",
-"37":"Family",
-"38":"Foreign",
-"39":"Horror",
-"40":"Sci-Fi/Fantasy",
-"41":"Thriller",
-"42":"Shorts",
-"43":"Shows",
-"44":"Trailers"}
-
 def get_authenticated_service(): 
     #flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRETS_FILE, SCOPES)
     #credentials = flow.run_console()
@@ -134,7 +101,7 @@ def videoSearch(service, video_id):
         title = item["snippet"]["title"]
         #decription = item["snippet"]["description"]
         cat = item["snippet"]["categoryId"]
-        print ("Title: '%s' and category: '%s' \n" % (title, categoryForNumber(cat)))
+        print ("Title: '%s' and category: '%s'" % (title, categoryForNumber(cat)))
 
     # return response["items"]
 
@@ -168,6 +135,22 @@ def getData():
         if result is not None:
             string += str
     return string
+
+
+def getDataOneVideo(id, service):
+    
+    videoSearch(service, id)
+
+    watson = commentsSearch(service,id)
+
+    string = ""
+    for str in watson:
+        pattern = '[A-Za-z., ]'
+        result = re.match(pattern, str)
+        if result is not None:
+            string += str
+    return string
+
 
 def url_parse(url):
     parsed = urlparse.urlparse(url)
