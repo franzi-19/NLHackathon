@@ -1,9 +1,10 @@
+#!/usr/bin/python
 # Sample Python code for user authorization
 
 import os
-
+import urllib.parse as urlparse
 import google.oauth2.credentials
-
+import re
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import InstalledAppFlow
@@ -79,25 +80,67 @@ def commentsSearch(service, video_id):
     order = "relevance"
     ).execute()
 
+    watson= ""
     for item in results["items"]:
         comment = item["snippet"]["topLevelComment"] 
         author = comment["snippet"]["authorDisplayName"]
         text = comment["snippet"]["textDisplay"]
-        print("Comment by %s: %s" % (author, text)) 
+        watson += text + ". "
+        #print("Comment by %s: %s" % (author, text)) 
 
+    return watson
 
-
-    # ------Kommentare eines Kommentars
+    # ------Kommentare eines Kommentars------
     # parent_id = results["items"][0]["id"]      
     # comments = service.comments.list( part='snippet', parentId=parent_id).execute()
     # print(comments)
 
-if __name__ == '__main__':
-    # When running locally, disable OAuthlib's HTTPs verification. When
-    # running in production *do not* leave this option enabled.
+def videoSearch(service, video_id):
+    response = service.videos().list(id = video_id, part="snippet").execute()
+    for item in response["items"]:
+        title = item["snippet"]["title"]
+        #decription = item["snippet"]["description"]
+        cat = item["snippet"]["categoryId"]
+        print ("Title: '%s' and category: '%s' \n" % (title, categroyForNumber(cat)))
+
+    # return response["items"]
+
+
+def categroyForNumber(number):
+    return ""
+
+def getData():
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
     service = get_authenticated_service()
-    commentsSearch(service,"naW9U8MiUY0")
-    # channels_list_by_username(service,
-    #                           part='snippet,contentDetails,statistics',
-    #                           forUsername='GoogleDevelopers')
+
+    var = input("Please enter the link to your youtube video: ")
+    
+
+    #id = "naW9U8MiUY0" dragon
+    #id= "TmYOuO68uIE" #fußball
+    #id = "TFuQeK4is4U" #hundevideo
+    #id="ySN5Wnu88nE"# computer
+    #id="ktvTqknDobU"
+
+    id = url_parse(var)
+    
+    videoSearch(service, id)
+
+    watson = commentsSearch(service,id)
+
+    string = ""
+    for str in watson:
+        pattern = '[A-Za-z., ]'
+        result = re.match(pattern, str)
+        if result is not None:
+            string += str
+    return string
+
+def url_parse(url):
+    parsed = urlparse.urlparse(url)
+    return urlparse.parse_qs(parsed.query)["v"][0]
+
+
+if __name__ == '__main__':
+    print(getData())
+
