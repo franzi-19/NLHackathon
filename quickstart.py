@@ -8,6 +8,7 @@ import re
 from googleapiclient.discovery import build
 from googleapiclient.errors import HttpError
 from google_auth_oauthlib.flow import InstalledAppFlow
+import json
 
 # The CLIENT_SECRETS_FILE variable specifies the name of a file that contains
 # the OAuth 2.0 information for this application, including its client_id and
@@ -19,6 +20,39 @@ CLIENT_SECRETS_FILE = "client_secret.json"
 SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl']
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
+categories_as_json = {"2":"Autos & Vehicles",
+"1":"Film & Animation",
+"10":"Music",
+"15":"Pets & Animals",
+"17":"Sports",
+"18":"Short Movies",
+"19":"Travel & Events",
+"20":"Gaming",
+"21":"Videoblogging",
+"22":"People & Blogs",
+"23":"Comedy",
+"24":"Entertainment",
+"25":"News & Politics",
+"26":"Howto & Style",
+"27":"Education",
+"28":"Science & Technology",
+"29":"Nonprofits & Activism",
+"30":"Movies",
+"31":"Anime/Animation",
+"32":"Action/Adventure",
+"33":"Classics",
+"34":"Comedy",
+"35":"Documentary",
+"36":"Drama",
+"37":"Family",
+"38":"Foreign",
+"39":"Horror",
+"40":"Sci-Fi/Fantasy",
+"41":"Thriller",
+"42":"Shorts",
+"43":"Shows",
+"44":"Trailers"}
+categories_dict = json.loads(categories_as_json)
 
 categories = {"2":"Autos & Vehicles",
 "1":"Film & Animation",
