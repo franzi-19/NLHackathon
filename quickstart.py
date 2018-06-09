@@ -20,7 +20,7 @@ CLIENT_SECRETS_FILE = "client_secret.json"
 SCOPES = ['https://www.googleapis.com/auth/youtube.force-ssl']
 API_SERVICE_NAME = 'youtube'
 API_VERSION = 'v3'
-categories_as_json = {"2":"Autos & Vehicles",
+categories = {"2":"Autos & Vehicles",
 "1":"Film & Animation",
 "10":"Music",
 "15":"Pets & Animals",
@@ -52,7 +52,6 @@ categories_as_json = {"2":"Autos & Vehicles",
 "42":"Shorts",
 "43":"Shows",
 "44":"Trailers"}
-categories_dict = json.loads(categories_as_json)
 
 categories = {"2":"Autos & Vehicles",
 "1":"Film & Animation",
@@ -135,13 +134,13 @@ def videoSearch(service, video_id):
         title = item["snippet"]["title"]
         #decription = item["snippet"]["description"]
         cat = item["snippet"]["categoryId"]
-        print ("Title: '%s' and category: '%s' \n" % (title, categroyForNumber(cat)))
+        print ("Title: '%s' and category: '%s' \n" % (title, categoryForNumber(cat)))
 
     # return response["items"]
 
 
-def categroyForNumber(number):
-    return ""
+def categoryForNumber(number):
+    return categories[str(number)]
 
 def getData():
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = '1'
@@ -150,10 +149,10 @@ def getData():
     var = input("Please enter the link to your youtube video: ")
     
 
-    #id = "naW9U8MiUY0" dragon
+    #id = "naW9U8MiUY0" #dragon
     #id= "TmYOuO68uIE" #fußball
     #id = "TFuQeK4is4U" #hundevideo
-    #id="ySN5Wnu88nE"# computer
+    #id="ySN5Wnu88nE" #computer
     #id="ktvTqknDobU"
 
     id = url_parse(var)
